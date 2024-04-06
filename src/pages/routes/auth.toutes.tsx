@@ -8,7 +8,9 @@ export function AuthRoutes() {
   return (
     <AuthNavigator.Navigator>
 
-      <AuthNavigator.Screen name="SignIn" component={SignIn} />
+      <AuthNavigator.Screen name="SignIn" component={SignIn} options={{
+        headerShown: false // para nao mostrar o header
+      }} />
       <AuthNavigator.Screen name="SignUp" component={SignUp} />
     </AuthNavigator.Navigator>
   )
