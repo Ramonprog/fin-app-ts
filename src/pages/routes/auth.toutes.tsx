@@ -11,7 +11,13 @@ export function AuthRoutes() {
       <AuthNavigator.Screen name="SignIn" component={SignIn} options={{
         headerShown: false // para nao mostrar o header
       }} />
-      <AuthNavigator.Screen name="SignUp" component={SignUp} />
+      <AuthNavigator.Screen name="SignUp" component={SignUp} options={{
+        headerStyle: {
+          backgroundColor: '#3b3dbf',
+        },
+        headerTintColor: '#fff',
+        title: 'Voltar'
+      }} />
     </AuthNavigator.Navigator>
   )
 }
