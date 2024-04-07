@@ -42,3 +42,10 @@ export const SubmitText = styled.Text`
 export const Link = styled.TouchableOpacity`
   margin: 10px;
 `;
+
+export const Title = styled.Text`
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 500;
+`;

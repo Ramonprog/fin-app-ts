@@ -1,10 +1,10 @@
 import { Text, View } from "react-native";
-import { Container, AreaInput, Input, SubmitButton, SubmitText } from './styles'
+import { Container, AreaInput, Input, SubmitButton, SubmitText, Title } from './styles'
 
 export function SignUp() {
     return (
         <Container>
-
+            <Title>Cadastre-se</Title>
             <AreaInput>
                 <Input placeholder="Seu nome" />
             </AreaInput>
