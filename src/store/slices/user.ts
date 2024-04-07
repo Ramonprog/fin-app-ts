@@ -1,19 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+// userSlice.ts
+import { Action, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import api from "../../services/api";
+
+interface ErrorData extends Action {
+  error: Error;
+}
+interface IUserSignUp {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const initialState = {
   email: "",
   name: "",
+  loading: false,
+  error: null as ErrorData | null,
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    signUpSlice: (state, action) => {
-      console.log(action.payload);
-    },
-  },
+  reducers: {},
 });
 
-export const { signUpSlice } = userSlice.actions;
 export const userReducer = userSlice.reducer;

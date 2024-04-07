@@ -12,7 +12,13 @@ export const Logo = styled.Image`
 `;
 
 export const AreaInput = styled.View`
-  flex-direction: row;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`;
+
+export const TextError = styled.Text`
+  color: red;
 `;
 
 export const Input = styled.TextInput`
@@ -22,7 +28,7 @@ export const Input = styled.TextInput`
   padding: 10px;
   border-radius: 8px;
   color: #121212;
-  margin-bottom: 15px;
+  margin-top: 15px;
 `;
 
 export const SubmitButton = styled.TouchableOpacity`
@@ -32,6 +38,7 @@ export const SubmitButton = styled.TouchableOpacity`
   background-color: #3b3bbf;
   align-items: center;
   justify-content: center;
+  margin-top: 30px;
 `;
 
 export const SubmitText = styled.Text`
