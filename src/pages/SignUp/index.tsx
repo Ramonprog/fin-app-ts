@@ -1,30 +1,30 @@
 import { ActivityIndicator, Text, View } from "react-native";
-import { Container, AreaInput, Input, SubmitButton, SubmitText, Title, TextError } from './styles'
+import { Container, AreaInput, Input, SubmitButton, SubmitText, Title, TextError, LabelText } from './styles'
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import api from "../../services/api";
 import { useState } from "react";
-
+import { useNavigation } from '@react-navigation/native'
 export function SignUp() {
   const [load, setLoad] = useState(false)
+  const navigation = useNavigation()
 
-  type Inputs = {
+  type IUserData = {
     name: string;
     email: string;
     password: string;
   };
 
-  const { control, handleSubmit, reset, formState: { errors } } = useForm<Inputs>();
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<IUserData>();
 
-  const onSubmit = async (dataUser: Inputs) => {
+  const onSubmit = async (dataUser: IUserData) => {
     setLoad(true)
     try {
-      const { data } = await api.post('/users', dataUser);
-      console.log("🚀 ~ onSubmit ~ data:", data)
+      await api.post('/users', dataUser);
       setLoad(false)
+      navigation.navigate('SignIn' as never);
       reset();
     } catch (error) {
       console.log("🚀 ~ onSubmit ~ error:", error)
-
     }
   }
 
@@ -33,6 +33,7 @@ export function SignUp() {
       <Title>Cadastre-se</Title>
 
       <AreaInput>
+        <LabelText>Nome:</LabelText>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -50,6 +51,7 @@ export function SignUp() {
       </AreaInput>
 
       <AreaInput>
+        <LabelText>E-mail:</LabelText>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -66,6 +68,7 @@ export function SignUp() {
         {errors.email && <TextError>O e-mail é obrigatório</TextError>}
       </AreaInput>
       <AreaInput>
+        <LabelText>Senha:</LabelText>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (

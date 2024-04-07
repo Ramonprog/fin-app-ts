@@ -28,7 +28,12 @@ export const Input = styled.TextInput`
   padding: 10px;
   border-radius: 8px;
   color: #121212;
+`;
+
+export const LabelText = styled.Text`
   margin-top: 15px;
+  align-self: flex-start;
+  margin-left: 23px;
 `;
 
 export const SubmitButton = styled.TouchableOpacity`
