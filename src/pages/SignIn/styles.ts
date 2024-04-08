@@ -12,7 +12,9 @@ export const Logo = styled.Image`
 `;
 
 export const AreaInput = styled.View`
-  flex-direction: row;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 `;
 
 export const Input = styled.TextInput`
@@ -41,4 +43,12 @@ export const SubmitText = styled.Text`
 
 export const Link = styled.TouchableOpacity`
   margin: 10px;
+`;
+export const TextError = styled.Text`
+  color: red;
+`;
+export const LabelText = styled.Text`
+  margin-top: 15px;
+  align-self: flex-start;
+  margin-left: 23px;
 `;
