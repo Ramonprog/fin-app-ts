@@ -1,32 +1,42 @@
 import { ActivityIndicator, Text, View } from "react-native";
-import { Container, AreaInput, Input, SubmitButton, SubmitText, Title, TextError, LabelText } from './styles'
+import {
+  Container,
+  AreaInput,
+  Input,
+  SubmitButton,
+  SubmitText,
+  Title,
+  TextError,
+  LabelText,
+} from "./styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import api from "../../services/api";
 import { useState } from "react";
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 export function SignUp() {
-  const [load, setLoad] = useState(false)
-  const navigation = useNavigation()
+  const [load, setLoad] = useState(false);
+  const navigation = useNavigation();
 
-  type IUserData = {
-    name: string;
-    email: string;
-    password: string;
-  };
-
-  const { control, handleSubmit, reset, formState: { errors } } = useForm<IUserData>();
-
-  const onSubmit = async (dataUser: IUserData) => {
-    setLoad(true)
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (dataUser) => {
+    console.log("🚀 ~ onSubmit ~ dataUser:", dataUser);
+    setLoad(true);
     try {
-      await api.post('/users', dataUser);
-      setLoad(false)
-      navigation.navigate('SignIn' as never);
+      await api.post("/users", dataUser);
+      setLoad(false);
+      navigation.navigate("SignIn");
       reset();
     } catch (error) {
-      console.log("🚀 ~ onSubmit ~ error:", error)
+      setLoad(false);
+      alert("Erro ao cadastrar, tente novamente");
+      console.log("🚀 ~ onSubmit ~ error:", error);
     }
-  }
+  };
 
   return (
     <Container>
@@ -40,7 +50,7 @@ export function SignUp() {
             <Input
               placeholder="Seu nome"
               onBlur={onBlur}
-              onChangeText={value => onChange(value)}
+              onChangeText={(value) => onChange(value)}
               value={value}
             />
           )}
@@ -58,7 +68,7 @@ export function SignUp() {
             <Input
               placeholder="Seu e-mail"
               onBlur={onBlur}
-              onChangeText={value => onChange(value)}
+              onChangeText={(value) => onChange(value)}
               value={value}
             />
           )}
@@ -75,7 +85,7 @@ export function SignUp() {
             <Input
               placeholder="Sua senha"
               onBlur={onBlur}
-              onChangeText={value => onChange(value)}
+              onChangeText={(value) => onChange(value)}
               value={value}
               secureTextEntry={true}
             />
@@ -86,12 +96,13 @@ export function SignUp() {
         {errors.password && <TextError>A senha é obrigatória</TextError>}
       </AreaInput>
 
-      <SubmitButton activeOpacity={0.7} disabled={load} onPress={handleSubmit(onSubmit)}>
+      <SubmitButton
+        activeOpacity={0.7}
+        disabled={load}
+        onPress={handleSubmit(onSubmit)}
+      >
         {load ? <ActivityIndicator /> : <SubmitText>Cadastrar</SubmitText>}
       </SubmitButton>
-
-
-
     </Container>
-  )
+  );
 }

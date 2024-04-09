@@ -7,47 +7,24 @@ import {
 } from "@reduxjs/toolkit";
 import api from "../../services/api";
 
-interface IUserSignUp {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface IUserSignIn {
-  email: string;
-  password: string;
-}
-
-interface UserState {
-  email: string;
-  name: string;
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: UserState = {
-  email: "",
-  name: "",
-  loading: false,
-  error: null,
-};
-
-interface UserData {
-  email: string;
-  password: string;
-}
-
 export const signInUser = createAsyncThunk(
   "user/signIn",
-  async (userData: UserData, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
-      const response = await api.post("/login", userData);
-      return response.data;
-    } catch (error: any) {
+      const { data } = await api.post("/login", userData);
+      console.log("🚀 ~ data:", data);
+      return data;
+    } catch (error) {
+      console.log("🚀 ~ error:", error);
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
 );
+
+const initialState = {
+  name: "",
+  password: "",
+};
 
 const userSlice = createSlice({
   name: "user",
