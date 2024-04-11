@@ -1,11 +1,11 @@
+import React from "react";
 import { View } from "react-native";
-import { AuthRoutes } from "./auth.toutes";
+import AuthRoutes from "./auth.toutes";
+import AppRoutes from "./app.routes";
 
-export function Routes() {
+export default function Routes() {
   const loading = false;
-  const signed = false
-  return (
-    signed ? (<View></View>) : <AuthRoutes />
+  const signed = true;
 
-  )
+  return signed ? <AppRoutes /> : <AuthRoutes />;
 }
