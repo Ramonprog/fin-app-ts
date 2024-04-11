@@ -1,4 +1,5 @@
 import { ActivityIndicator, LogBox, Text, View } from "react-native";
+import { useEffect } from "react";
 import {
   AreaInput,
   Container,
@@ -13,7 +14,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../../services/api";
 import { signInUser } from "../../store/slices/user";
 
 export function SignIn() {
@@ -41,6 +43,23 @@ export function SignIn() {
     }
   };
 
+  const getUser = async () => {
+    const storageUser = await AsyncStorage.getItem("@finToken");
+
+    try {
+      const { data } = await api.get("/me", {
+        headers: { Authorization: `Bearer ${storageUser}` },
+      });
+      console.log("🚀 ~ data:", data);
+    } catch (error) {
+      console.log("🚀 ~ error:", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <Container>
       <Logo source={require("../../assets/Logo.png")} />
@@ -61,7 +80,7 @@ export function SignIn() {
           name="email"
           rules={{ required: true }}
         />
-        {errors.email && <TextError>O nome é obrigatório</TextError>}
+        {errors.email && <TextError>O e-mail é obrigatório</TextError>}
       </AreaInput>
       <AreaInput>
         <LabelText>Senha:</LabelText>
@@ -79,7 +98,7 @@ export function SignIn() {
           name="password"
           rules={{ required: true }}
         />
-        {errors.password && <TextError>O nome é obrigatório</TextError>}
+        {errors.password && <TextError>A senha é obrigatório</TextError>}
       </AreaInput>
 
       <SubmitButton

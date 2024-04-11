@@ -6,6 +6,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import api from "../../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const signInUser = createAsyncThunk(
   "user/signIn",
@@ -39,7 +40,7 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(signInUser.fulfilled, (state, action) => {
+      .addCase(signInUser.fulfilled, async (state, action) => {
         state.name = action.payload.name;
         state.token = action.payload.token;
         state.id = action.payload.id;
@@ -48,6 +49,7 @@ const userSlice = createSlice({
         api.defaults.headers[
           "Authorization"
         ] = `Bearer ${action.payload.token}`;
+        await AsyncStorage.setItem("@finToken", action.payload.token);
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
