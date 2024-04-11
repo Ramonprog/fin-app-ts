@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../services/api";
 import { signInUser } from "../../store/slices/user";
-
+import { meSlice } from "../../store/slices/user";
 export function SignIn() {
   const navigation = useNavigation();
   const { loading } = useSelector((state) => state.user);
@@ -50,7 +50,7 @@ export function SignIn() {
       const { data } = await api.get("/me", {
         headers: { Authorization: `Bearer ${storageUser}` },
       });
-      console.log("🚀 ~ data:", data);
+      dispatch(meSlice(data));
     } catch (error) {
       console.log("🚀 ~ error:", error);
     }

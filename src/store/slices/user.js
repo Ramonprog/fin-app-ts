@@ -33,7 +33,18 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    meSlice: (state, action) => {
+      console.log(action, "action");
+      state.name = action.payload.name;
+      state.token = action.payload.token;
+      state.id = action.payload.id;
+      state.signed = true;
+      state.loading = false;
+      api.defaults.headers["Authorization"] = `Bearer ${action.payload.token}`;
+      return state;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signInUser.pending, (state) => {
@@ -64,4 +75,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { meSlice } = userSlice.actions;
 export const userReducer = userSlice.reducer;
