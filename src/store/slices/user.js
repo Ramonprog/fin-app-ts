@@ -15,6 +15,7 @@ export const signInUser = createAsyncThunk(
       return data;
     } catch (error) {
       console.log("🚀 ~ error:", error);
+      alert("E-mail ou senha incorretos");
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
@@ -24,6 +25,8 @@ const initialState = {
   name: "",
   signed: false,
   token: "",
+  id: "",
+  loading: false,
 };
 
 const userSlice = createSlice({
@@ -39,7 +42,22 @@ const userSlice = createSlice({
       .addCase(signInUser.fulfilled, (state, action) => {
         state.name = action.payload.name;
         state.token = action.payload.token;
+        state.id = action.payload.id;
         state.signed = true;
+        state.loading = false;
+        api.defaults.headers[
+          "Authorization"
+        ] = `Bearer ${action.payload.token}`;
+      })
+      .addCase(signInUser.rejected, (state, action) => {
+        state.loading = false;
+        state.signed = false;
+        state.name = "";
+        state.token = "";
+        state.id = "";
+        api.defaults.headers["Authorization"] = "";
+
+        return state;
       });
   },
 });

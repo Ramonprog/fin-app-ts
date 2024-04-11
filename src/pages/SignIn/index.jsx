@@ -1,4 +1,4 @@
-import { LogBox, Text, View } from "react-native";
+import { ActivityIndicator, LogBox, Text, View } from "react-native";
 import {
   AreaInput,
   Container,
@@ -12,12 +12,13 @@ import {
 } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { signInUser } from "../../store/slices/user";
 
 export function SignIn() {
   const navigation = useNavigation();
+  const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const {
@@ -81,8 +82,12 @@ export function SignIn() {
         {errors.password && <TextError>O nome é obrigatório</TextError>}
       </AreaInput>
 
-      <SubmitButton activeOpacity={0.7} onPress={handleSubmit(onSubmit)}>
-        <SubmitText>Acessar</SubmitText>
+      <SubmitButton
+        activeOpacity={0.7}
+        onPress={handleSubmit(onSubmit)}
+        disabled={loading}
+      >
+        {loading ? <ActivityIndicator /> : <SubmitText>Acessar</SubmitText>}
       </SubmitButton>
 
       <Link onPress={handleNavigateToSignUp}>
