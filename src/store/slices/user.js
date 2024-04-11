@@ -12,7 +12,6 @@ export const signInUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const { data } = await api.post("/login", userData);
-      console.log("🚀 ~ data:", data);
       return data;
     } catch (error) {
       console.log("🚀 ~ error:", error);
@@ -23,7 +22,8 @@ export const signInUser = createAsyncThunk(
 
 const initialState = {
   name: "",
-  password: "",
+  signed: false,
+  token: "",
 };
 
 const userSlice = createSlice({
@@ -37,7 +37,9 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(signInUser.fulfilled, (state, action) => {
-        console.log(action.payload);
+        state.name = action.payload.name;
+        state.token = action.payload.token;
+        state.signed = true;
       });
   },
 });
