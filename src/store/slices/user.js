@@ -1,10 +1,4 @@
-// userSlice.ts
-import {
-  Action,
-  PayloadAction,
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,8 +9,14 @@ export const signInUser = createAsyncThunk(
       const { data } = await api.post("/login", userData);
       return data;
     } catch (error) {
-      console.log("🚀 ~ error:", error);
-      alert("E-mail ou senha incorretos");
+      if (error.response && error.response.status === 401) {
+        // Se o status for 401, as credenciais são inválidas
+        alert("E-mail ou senha incorretos");
+      } else {
+        console.log("🚀 ~ error:", error);
+        // Outro tipo de erro, como erro de rede
+        alert("Erro ao fazer login. Por favor, tente novamente mais tarde.");
+      }
       return thunkAPI.rejectWithValue({ error: error.message });
     }
   }
@@ -35,14 +35,18 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     meSlice: (state, action) => {
-      console.log(action, "action");
       state.name = action.payload.name;
       state.token = action.payload.token;
       state.id = action.payload.id;
       state.signed = true;
       state.loading = false;
       api.defaults.headers["Authorization"] = `Bearer ${action.payload.token}`;
-      return state;
+    },
+    signOut: async (state, action) => {
+      await AsyncStorage.removeItem("@finToken");
+      return {
+        ...initialState,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -51,7 +55,7 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(signInUser.fulfilled, async (state, action) => {
+      .addCase(signInUser.fulfilled, (state, action) => {
         state.name = action.payload.name;
         state.token = action.payload.token;
         state.id = action.payload.id;
@@ -60,7 +64,7 @@ const userSlice = createSlice({
         api.defaults.headers[
           "Authorization"
         ] = `Bearer ${action.payload.token}`;
-        await AsyncStorage.setItem("@finToken", action.payload.token);
+        AsyncStorage.setItem("@finToken", action.payload.token);
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
@@ -69,11 +73,9 @@ const userSlice = createSlice({
         state.token = "";
         state.id = "";
         api.defaults.headers["Authorization"] = "";
-
-        return state;
       });
   },
 });
 
-export const { meSlice } = userSlice.actions;
+export const { meSlice, signOut } = userSlice.actions;
 export const userReducer = userSlice.reducer;
