@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { Home } from "../Home";
+import { TransactionRecord } from "../TransactionRecord";
 
 const Drawer = createDrawerNavigator();
 
@@ -21,7 +22,11 @@ export default function AppRoutes() {
         drawerInactiveBackgroundColor: "#f0f2ff",
       }}
     >
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Início" component={Home} />
+      <Drawer.Screen
+        name="Registrar movimentação"
+        component={TransactionRecord}
+      />
     </Drawer.Navigator>
   );
 }
