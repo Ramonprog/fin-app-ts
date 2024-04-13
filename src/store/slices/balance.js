@@ -26,7 +26,9 @@ export const getMoviments = createAsyncThunk(
 );
 
 const initialState = {
-  balance: "",
+  saldo: 0,
+  receita: 0,
+  despesa: 0,
 };
 
 const balanceSlice = createSlice({
@@ -35,11 +37,11 @@ const balanceSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getMoviments.pending, (state) => {
-        console.log("pendente");
-      })
       .addCase(getMoviments.fulfilled, (state, action) => {
         console.log("sucesso", action.payload);
+        state.saldo = action.payload[0].saldo;
+        state.receita = action.payload[1].saldo;
+        state.despesa = action.payload[2].saldo;
       })
       .addCase(getMoviments.rejected, (state, action) => {
         console.log("falhou", action.payload);

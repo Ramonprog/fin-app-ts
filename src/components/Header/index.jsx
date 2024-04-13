@@ -25,7 +25,7 @@ export function Header({ title }) {
         size={24}
         onPress={() => navigation.openDrawer()}
       />
-      <Text variant="headlineMedium">title</Text>
+      <Text variant="titleLarge">{title}</Text>
       <IconButton icon="exit-to-app" size={24} onPress={handleLogout} />
     </Container>
   );
