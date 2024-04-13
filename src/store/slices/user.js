@@ -42,10 +42,15 @@ const userSlice = createSlice({
       state.loading = false;
       api.defaults.headers["Authorization"] = `Bearer ${action.payload.token}`;
     },
-    signOut: async (state, action) => {
-      await AsyncStorage.removeItem("@finToken");
+    signOut: (state) => {
+      api.defaults.headers["Authorization"] = "";
       return {
-        ...initialState,
+        ...state,
+        name: "",
+        token: "",
+        id: "",
+        signed: false,
+        loading: false,
       };
     },
   },

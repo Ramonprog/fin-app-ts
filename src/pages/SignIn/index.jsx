@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../services/api";
 import { signInUser } from "../../store/slices/user";
 import { meSlice } from "../../store/slices/user";
+import { Button } from "react-native-paper";
 export function SignIn() {
   const navigation = useNavigation();
   const { loading } = useSelector((state) => state.user);
@@ -105,6 +106,7 @@ export function SignIn() {
         activeOpacity={0.7}
         onPress={handleSubmit(onSubmit)}
         disabled={loading}
+        mode="contained"
       >
         {loading ? <ActivityIndicator /> : <SubmitText>Acessar</SubmitText>}
       </SubmitButton>

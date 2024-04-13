@@ -1,3 +1,4 @@
+import { Button } from "react-native-paper";
 import styled from "styled-components/native";
 
 export const Container = styled.KeyboardAvoidingView`
@@ -36,14 +37,10 @@ export const LabelText = styled.Text`
   margin-left: 23px;
 `;
 
-export const SubmitButton = styled.TouchableOpacity`
-  width: 90%;
-  border-radius: 8px;
-  height: 45px;
-  background-color: #3b3bbf;
-  align-items: center;
-  justify-content: center;
+export const SubmitButton = styled(Button)`
   margin-top: 30px;
+  width: 90%;
+  background-color: #3b3bbf;
 `;
 
 export const SubmitText = styled.Text`
