@@ -7,6 +7,7 @@ export const signInUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const { data } = await api.post("/login", userData);
+      await AsyncStorage.setItem("@finToken", data.token);
       return data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -69,7 +70,6 @@ const userSlice = createSlice({
         api.defaults.headers[
           "Authorization"
         ] = `Bearer ${action.payload.token}`;
-        AsyncStorage.setItem("@finToken", action.payload.token);
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
