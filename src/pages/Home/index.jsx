@@ -1,9 +1,10 @@
 import { Text, View } from "react-native";
+import { Header } from "../../components/Header";
 
 export function Home() {
   return (
     <View>
-      <Text>Tela Home</Text>
+      <Header title="Minhas movimentações" />
     </View>
   );
 }
