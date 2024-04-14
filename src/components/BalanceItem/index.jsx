@@ -21,10 +21,16 @@ export function BalanceItem({ data }) {
     }
   }, [data]);
 
+  const formmater = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  });
+
   return (
     <Container bg={labelName.color}>
       <Label>{labelName.label}</Label>
-      <Balance>R$ {data.saldo}</Balance>
+      <Balance>{formmater.format(data.saldo)}</Balance>
     </Container>
   );
 }

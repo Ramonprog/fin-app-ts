@@ -1,4 +1,9 @@
-import { Keyboard, SafeAreaView, TouchableWithoutFeedback } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Header } from "../../components/Header";
 import {
   Container,
@@ -11,9 +16,16 @@ import {
 
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { format } from "date-fns";
+import api from "../../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useNavigation } from "@react-navigation/native";
 
 export function TransactionRecord() {
-  const [transactionType, setTransactionType] = useState("Receita");
+  const navigation = useNavigation();
+  const [transactionType, setTransactionType] = useState("receita");
+  const [load, setLoad] = useState(false);
 
   const {
     control,
@@ -21,6 +33,51 @@ export function TransactionRecord() {
     reset,
     formState: { errors },
   } = useForm();
+
+  const formatDate = (date) => {
+    return format(date, "dd/MM/yyyy");
+  };
+
+  const onSubmit = async (data) => {
+    Alert.alert(
+      "Confirmando Registro",
+      `Você está prestes a registrar uma ${transactionType.toLowerCase()} no valor de R$ ${
+        data.value
+      }.`,
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Continuar",
+          onPress: async () => {
+            try {
+              const dateFormatted = formatDate(new Date());
+              const payload = {
+                description: data?.description,
+                value: Number(data?.value),
+                type: transactionType,
+                date: dateFormatted,
+              };
+              const token = await AsyncStorage.getItem("@finToken");
+              await api.post("/receive", payload, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              console.log("deu bom");
+              navigation.navigate("Início");
+              reset();
+            } catch (error) {
+              console.log("Erro ao registrar transação:", error.message);
+              Alert.alert(
+                "Erro",
+                "Ocorreu um erro ao registrar a transação. Por favor, tente novamente mais tarde."
+              );
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -37,6 +94,8 @@ export function TransactionRecord() {
                 mode="outlined"
                 label="Descrição"
                 placeholder="Descrição do registro"
+                onBlur={onBlur}
+                onChangeText={onChange}
                 value={value}
               />
             )}
@@ -51,6 +110,8 @@ export function TransactionRecord() {
                 label="Valor"
                 placeholder="Valor desejado"
                 keyboardType="numeric"
+                onBlur={onBlur}
+                onChangeText={onChange}
                 value={value}
               />
             )}
@@ -63,19 +124,19 @@ export function TransactionRecord() {
             onValueChange={setTransactionType}
             buttons={[
               {
-                value: "Receita",
+                value: "receita",
                 label: "Receita",
                 icon: "arrow-top-left",
               },
               {
-                value: "Despesa",
+                value: "despesa",
                 label: "Despesa",
                 icon: "arrow-bottom-right",
               },
             ]}
           />
 
-          <SubmitButton>
+          <SubmitButton activeOpacity={0.7} onPress={handleSubmit(onSubmit)}>
             <SubmitText>Registrar</SubmitText>
           </SubmitButton>
         </SafeAreaView>

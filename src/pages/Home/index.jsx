@@ -13,23 +13,29 @@ export function Home() {
 
   const balance = useSelector((state) => state.balance);
   const [balanceList, setBalanceList] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   useEffect(() => {
-    const balanceArray = Object.keys(balance).map((key, index) => ({
-      saldo: balance[key],
-      id: index,
-      tag: key,
-    }));
-    setBalanceList(balanceArray);
-
-    setBalanceList(balanceArray);
-
-    let isActive = true;
-    if (!isActive) {
+    const fetchBalance = async () => {
       dispatch(getMoviments());
-    }
+      setDataLoaded(true);
+    };
 
-    return () => (isActive = false);
-  }, [isFocused]);
+    if (isFocused) {
+      fetchBalance();
+    }
+  }, [dispatch, isFocused]);
+
+  useEffect(() => {
+    if (dataLoaded) {
+      const balanceArray = Object.keys(balance).map((key, index) => ({
+        saldo: balance[key],
+        id: index.toString(),
+        tag: key,
+      }));
+      setBalanceList(balanceArray);
+    }
+  }, [balance, dataLoaded]);
 
   return (
     <Container>
