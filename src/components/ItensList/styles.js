@@ -5,18 +5,20 @@ export const Area = styled.View`
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   margin-top: 20px;
-  flex-direction: row;
   padding: 0 14px;
-  align-items: baseline;
+
   flex: 1;
 `;
 
+export const Header = styled.View`
+  flex-direction: row;
+  align-items: baseline;
+`;
+
 export const Label = styled.Text`
-  color: "#121212";
+  color: #121212;
   font-weight: bold;
   font-size: 18px;
 `;
 
-export const List = styled.FlatList`
-  
-`;
+export const List = styled.FlatList``;
