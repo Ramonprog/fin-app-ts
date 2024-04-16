@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native"; //garante que o usuario está na tela, retornando true ou false
 import { Container, ListBalance } from "./styles";
 import { BalanceItem } from "../../components/BalanceItem";
+import { ItensList } from "../../components/ItensList";
 
 export function Home() {
   const dispatch = useDispatch();
@@ -48,6 +49,8 @@ export function Home() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <BalanceItem data={item} />}
       />
+
+      <ItensList />
     </Container>
   );
 }
