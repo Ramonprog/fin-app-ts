@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import api from "../../services/api";
 import { format } from "date-fns";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 
 export function ItensList() {
+  const isFocused = useIsFocused();
   const [receives, setReceives] = useState([]);
 
   async function getReceives() {
@@ -30,8 +32,27 @@ export function ItensList() {
   }
 
   useEffect(() => {
-    getReceives();
-  }, []);
+    if (isFocused) {
+      getReceives();
+    }
+  }, [isFocused]);
+
+  async function handleDeleteRegister(id) {
+    try {
+      const token = await AsyncStorage.getItem("@finToken");
+      await api.delete(`/receives/delete`, {
+        params: {
+          item_id: id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      getReceives();
+    } catch (error) {
+      console.log("🚀 ~ handleDeleteRegister ~ error:", error);
+    }
+  }
 
   return (
     <Area>
@@ -43,7 +64,9 @@ export function ItensList() {
       <List
         data={receives}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Card data={item} />}
+        renderItem={({ item }) => (
+          <Card data={item} handleDelete={handleDeleteRegister} />
+        )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
