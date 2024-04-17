@@ -19,7 +19,7 @@ export const Type = styled.View`
 
 export const IconView = styled.View`
   flex-direction: row;
-  background: #c62c36;
+  background: ${(props) => (props.type === "despesa" ? "#c62c36" : "#049301")};
   padding: 2px 6px;
   border-radius: 4px;
 `;
@@ -28,4 +28,5 @@ export const TextValue = styled.Text`
   color: #112121;
   font-size: 16px;
   margin-top: 2px;
+  font-weight: bold;
 `;
