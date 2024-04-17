@@ -2,6 +2,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { Home } from "../Home";
 import { TransactionRecord } from "../TransactionRecord";
+import { Profile } from "../Profile";
 
 const Drawer = createDrawerNavigator();
 
@@ -27,6 +28,7 @@ export default function AppRoutes() {
         name="Registrar movimentação"
         component={TransactionRecord}
       />
+      <Drawer.Screen name="Perfil" component={Profile} />
     </Drawer.Navigator>
   );
 }
