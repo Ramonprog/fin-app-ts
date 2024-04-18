@@ -3,12 +3,14 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Home } from "../Home";
 import { TransactionRecord } from "../TransactionRecord";
 import { Profile } from "../Profile";
+import { CustomDrawer } from "../../components/CustomDrawer";
 
 const Drawer = createDrawerNavigator();
 
 export default function AppRoutes() {
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawer {...props} />}
       screenOptions={{
         headerShown: false,
 
